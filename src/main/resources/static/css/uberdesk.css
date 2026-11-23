@@ -1,0 +1,153 @@
+:root {
+    --ud-yellow: #F2D03B;
+    --ud-orange: #F07C2E;
+    --ud-red: #E63946;
+    --ud-gradient: linear-gradient(90deg, var(--ud-yellow) 0%, var(--ud-orange) 50%, var(--ud-red) 100%);
+
+    /* Paleta Grafite Neutro */
+    --ud-bg: #121214;
+    --ud-surface: #1C1C21;
+    --ud-border: #2C2C34;
+    --ud-text: #F4F4F6;
+    --ud-text-muted: #A1A1AA;
+}
+
+body {
+    background-color: var(--ud-bg);
+    color: var(--ud-text);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+/* Faixa superior com a identidade visual */
+.top-accent {
+    height: 5px;
+    background: var(--ud-gradient);
+}
+
+/* Subtítulo estilo "SOMOS DEVS" */
+.brand-kicker {
+    font-size: 0.85rem;
+    font-weight: 800;
+    letter-spacing: 0.25rem;
+    text-transform: uppercase;
+    color: var(--ud-text-muted);
+    margin-bottom: 0.25rem;
+}
+
+/* Título principal com degradê */
+.brand-title {
+    font-size: 2.4rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -0.02rem;
+    background: var(--ud-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+    margin-bottom: 0;
+}
+
+/* Botão principal em degradê */
+.btn-uberdesk {
+    background: linear-gradient(90deg, var(--ud-orange) 0%, var(--ud-red) 100%);
+    border: none;
+    color: #FFFFFF;
+    font-weight: 600;
+    padding: 0.65rem 1.5rem;
+    border-radius: 8px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn-uberdesk:hover {
+    color: #FFFFFF;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(240, 124, 46, 0.35);
+}
+
+/* Cards e Containers */
+.card-uberdesk {
+    background-color: var(--ud-surface);
+    border: 1px solid var(--ud-border);
+    border-radius: 14px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+    overflow: hidden;
+}
+
+/* Tabela no modo escuro com zebrado laranja sutil */
+.table-uberdesk {
+    --bs-table-bg: var(--ud-surface);
+    --bs-table-color: var(--ud-text);
+    --bs-table-border-color: var(--ud-border);
+    --bs-table-striped-bg: rgba(240, 124, 46, 0.06);
+    --bs-table-striped-color: var(--ud-text);
+    --bs-table-hover-bg: rgba(240, 124, 46, 0.14);
+    --bs-table-hover-color: #FFFFFF;
+}
+
+.table thead th {
+    background-color: #16161A;
+    color: var(--ud-text-muted);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08rem;
+    padding: 1rem;
+    border-bottom: 1px solid var(--ud-border);
+}
+
+.table tbody td {
+    padding: 1rem;
+    vertical-align: middle;
+}
+
+/* Botões de ação na tabela */
+.btn-edit-ud {
+    background-color: rgba(240, 124, 46, 0.15);
+    color: #FF9F5A;
+    border: 1px solid rgba(240, 124, 46, 0.35);
+    font-weight: 600;
+}
+
+.btn-edit-ud:hover {
+    background-color: var(--ud-orange);
+    color: #FFFFFF;
+    border-color: var(--ud-orange);
+}
+
+.btn-delete-ud {
+    background-color: rgba(230, 57, 70, 0.15);
+    color: #FF6B78;
+    border: 1px solid rgba(230, 57, 70, 0.35);
+    font-weight: 600;
+}
+
+.btn-delete-ud:hover {
+    background-color: var(--ud-red);
+    color: #FFFFFF;
+    border-color: var(--ud-red);
+}
+
+/* Formulários no modo escuro */
+.form-label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--ud-text);
+}
+
+.form-control,
+.form-select {
+    background-color: var(--ud-bg);
+    border: 1px solid var(--ud-border);
+    color: var(--ud-text);
+}
+
+.form-control::placeholder {
+    color: var(--ud-text-muted);
+}
+
+.form-control:focus,
+.form-select:focus {
+    background-color: var(--ud-bg);
+    color: var(--ud-text);
+    border-color: var(--ud-orange);
+    box-shadow: 0 0 0 0.2rem rgba(240, 124, 46, 0.25);
+}

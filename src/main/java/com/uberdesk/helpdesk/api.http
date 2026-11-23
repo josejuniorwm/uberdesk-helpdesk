@@ -1,0 +1,10 @@
+### Criar um novo Usuário (Método POST)
+
+ POST http://localhost:8080/usuarios
+ Content-Type: application/json
+
+ {
+    "nome": "Fernando Admin",
+    "email": "fernando@uberdesk.com",
+    "perfil": "ADMIN"
+ }
