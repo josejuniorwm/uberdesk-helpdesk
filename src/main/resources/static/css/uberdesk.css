@@ -184,3 +184,28 @@ body {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
+
+/* Fundos de Status com a paleta Creme Quente, Amarelo Manteiga e Cinza Areia */
+.status-aberto {
+    background-color: #E07A5F !important; /* Terracota / Coral */
+    color: #FFFFFF !important;
+    border: 1px solid #c9654b;
+}
+.status-andamento {
+    background-color: #FFF2C2 !important; /* Amarelo Manteiga */
+    color: #212529 !important;
+    border: 1px solid #ead896;
+}
+
+.status-fechado {
+    background-color: #E5E2DC !important; /* Cinza Areia (para a pesquisa) */
+    color: #212529 !important;
+    border: 1px solid #cfcbc3;
+}
+
+/* Prioridade Baixa em Cinza Areia */
+.prioridade-baixa {
+    background-color: #E5E2DC !important; /* Cinza Areia */
+    color: #212529 !important;
+    border: 1px solid #cfcbc3;
+}

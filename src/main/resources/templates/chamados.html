@@ -22,7 +22,42 @@
             + Novo Chamado
         </a>
     </div>
+    <!-- BARRA DE FILTROS -->
+    <div class="card card-uberdesk mb-4">
+        <div class="card-body p-3">
+            <div class="row g-3 align-items-end">
+                <div class="col-md-5">
+                    <label for="filtroBusca" class="form-label small text-secondary mb-1">Buscar por ID ou Título</label>
+                    <input type="text" id="filtroBusca" class="form-control" placeholder="Ex: 12 ou impressora...">
+                </div>
 
+                <div class="col-md-3">
+                    <label for="filtroStatus" class="form-label small text-secondary mb-1">Status</label>
+                    <select id="filtroStatus" class="form-select">
+                        <option value="ATIVOS" selected>Ativos (Aberto / Andamento)</option>
+                        <option value="ABERTO">Aberto (A)</option>
+                        <option value="ANDAMENTO">Em Andamento (E)</option>
+                        <option value="ENCERRADO">Encerrados (F)</option>
+                        <option value="TODOS">Todos</option>
+                    </select>
+                </div>
+
+                <div class="col-md-2">
+                    <label for="filtroPrioridade" class="form-label small text-secondary mb-1">Prioridade</label>
+                    <select id="filtroPrioridade" class="form-select">
+                        <option value="TODAS" selected>Todas</option>
+                        <option value="ALTA">Alta (A)</option>
+                        <option value="MEDIA">Média (M)</option>
+                        <option value="BAIXA">Baixa (B)</option>
+                    </select>
+                </div>
+
+                <div class="col-md-2 d-grid">
+                    <button type="button" id="btnLimparFiltros" class="btn btn-outline-secondary">Limpar</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="card card-uberdesk">
         <div class="table-responsive">
             <table class="table table-hover table-striped table-uberdesk mb-0">
@@ -36,14 +71,27 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="chamado : ${listaChamados}">
+                <tr th:each="chamado : ${listaChamados}"
+                    class="linha-chamado"
+                    th:attr="data-id=${chamado.id},
+                      data-titulo=${chamado.titulo},
+                      data-status=${chamado.status != null ? chamado.status.name() : ''},
+                      data-prioridade=${chamado.prioridade != null ? chamado.prioridade.name() : ''}">
                     <td class="fw-bold text-muted" th:text="'#' + ${chamado.id}">#1</td>
                     <td class="fw-semibold" th:text="${chamado.titulo}">Título de Teste</td>
                     <td>
-                        <span class="badge rounded-pill text-bg-light border" th:text="${chamado.status.codigo}">0</span>
+                        <span th:if="${chamado.status != null}"
+                              class="badge rounded-pill"
+                              th:classappend="${chamado.status.name() == 'ABERTO'} ? 'status-aberto' : (${chamado.status.name() == 'ANDAMENTO'} ? 'status-andamento' : 'status-fechado')"
+                              th:text="${chamado.status.name() == 'ABERTO'} ? 'A' : (${chamado.status.name() == 'ANDAMENTO'} ? 'E' : 'F')"
+                              th:title="${chamado.status}">A</span>
                     </td>
                     <td>
-                        <span class="badge rounded-pill text-bg-warning" th:text="${chamado.prioridade.codigo}">1</span>
+                        <span th:if="${chamado.prioridade != null}"
+                              class="badge rounded-pill"
+                              th:classappend="${chamado.prioridade.name() == 'ALTA'} ? 'text-bg-danger' : (${chamado.prioridade.name() == 'MEDIA'} ? 'text-bg-warning' : 'prioridade-baixa')"
+                              th:text="${chamado.prioridade.name() == 'ALTA'} ? 'A' : (${chamado.prioridade.name() == 'MEDIA'} ? 'M' : 'B')"
+                              th:title="${chamado.prioridade}">A</span>
                     </td>
                     <td class="text-center">
                         <a th:href="@{/chamados/{id}/detalhes(id=${chamado.id})}" class="btn btn-sm btn-outline-info me-1">Interagir</a>
@@ -56,5 +104,7 @@
         </div>
     </div>
 </div>
+<!-- Script de filtros da tabela -->
+<script th:src="@{/js/chamados-filtro.js}"></script>
 </body>
 </html>
