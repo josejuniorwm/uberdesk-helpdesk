@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="'UberDesk - Chamado #' + ${chamado.id}">UberDesk - Detalhes do Chamado</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/uberdesk.css}">
+</head>
+<body>
+<div class="top-accent"></div>
+
+<div class="container py-5">
+    <div class="d-flex flex-wrap justify-content-between align-items-end mb-4 gap-3">
+        <div>
+            <div class="brand-kicker">UberDesk Help Desk</div>
+            <h1 class="brand-title" th:text="'Chamado #' + ${chamado.id}">Chamado #1</h1>
+        </div>
+
+        <a th:href="@{/ui/chamados}" class="btn btn-outline-secondary">
+            &larr; Voltar para Chamados
+        </a>
+    </div>
+
+    <!-- 1. DADOS PRINCIPAIS DO CHAMADO -->
+    <div class="card card-uberdesk mb-4">
+        <div class="card-body p-4">
+            <div class="d-flex flex-wrap justify-content-between align-items-start gap-2 border-bottom border-secondary-subtle pb-3 mb-3">
+                <h2 class="h4 mb-0 fw-semibold" th:text="${chamado.titulo}">Título do Chamado</h2>
+                <div class="d-flex gap-2">
+                    <span class="badge rounded-pill text-bg-light border"
+                          th:if="${chamado.status != null}"
+                          th:text="${chamado.status}">ABERTO</span>
+                    <span class="badge rounded-pill text-bg-warning"
+                          th:if="${chamado.prioridade != null}"
+                          th:text="${chamado.prioridade}">ALTA</span>
+                </div>
+            </div>
+
+            <div class="d-flex flex-wrap gap-4 small text-secondary mb-3">
+                <div>
+                    <strong class="text-body">Cliente:</strong>
+                    <span th:text="${chamado.cliente != null ? chamado.cliente.nome : 'Não informado'}">Cliente</span>
+                </div>
+                <div>
+                    <strong class="text-body">Técnico:</strong>
+                    <span th:text="${chamado.tecnico != null ? chamado.tecnico.nome : 'Aguardando atribuição'}">Técnico</span>
+                </div>
+                <div th:if="${chamado.dataAbertura != null}">
+                    <strong class="text-body">Aberto em:</strong>
+                    <span th:text="${#temporals.format(chamado.dataAbertura, 'dd/MM/yyyy')}">25/11/2026</span>
+                </div>
+            </div>
+
+            <p class="mb-0" style="white-space: pre-wrap;" th:text="${chamado.observacoes}">
+                Observações detalhadas do chamado...
+            </p>
+        </div>
+    </div>
+
+    <!-- 2. TIMELINE DE INTERAÇÕES -->
+    <div class="card card-uberdesk mb-4">
+        <div class="card-body p-4">
+            <h3 class="h5 mb-3">Histórico de Interações</h3>
+
+            <div class="text-center text-secondary py-4" th:if="${#lists.isEmpty(interacoes)}">
+                Nenhuma interação registrada neste chamado ainda.
+            </div>
+
+            <div class="d-flex flex-column gap-3" th:if="${!#lists.isEmpty(interacoes)}">
+                <div th:each="interacao : ${interacoes}"
+                     class="p-3 rounded border-start border-4 bg-body-tertiary"
+                     th:classappend="${interacao.autor.perfil != null and interacao.autor.perfil.name() == 'CLIENTE'} ? 'border-success' : 'border-primary'">
+
+                    <div class="d-flex flex-wrap justify-content-between align-items-center mb-2 small text-secondary">
+                        <div>
+                            <strong class="text-body" th:text="${interacao.autor.nome}">Nome do Autor</strong>
+                            <span class="badge ms-2"
+                                  th:if="${interacao.autor.perfil != null}"
+                                  th:classappend="${interacao.autor.perfil.name() == 'CLIENTE'} ? 'text-bg-success' : 'text-bg-primary'"
+                                  th:text="${interacao.autor.perfil}">PERFIL</span>
+                        </div>
+                        <span th:text="${#temporals.format(interacao.dataHora, 'dd/MM/yyyy HH:mm')}">25/11/2026 19:30</span>
+                    </div>
+
+                    <p class="mb-0" style="white-space: pre-wrap;" th:text="${interacao.mensagem}">
+                        Texto da mensagem...
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. FORMULÁRIO DE NOVA INTERAÇÃO (OU AVISO DE ENCERRADO) -->
+    <div class="card card-uberdesk">
+        <div class="card-body p-4">
+
+            <!-- Se o chamado já estiver ENCERRADO -->
+            <div th:if="${chamado.status != null and chamado.status.name() == 'ENCERRADO'}"
+                 class="alert alert-danger bg-danger bg-opacity-10 border-danger text-danger-emphasis mb-0">
+                <strong>Chamado encerrado</strong>
+                <span th:if="${chamado.dataFechamento != null}"
+                      th:text="' em ' + ${#temporals.format(chamado.dataFechamento, 'dd/MM/yyyy')}"></span>.
+                Não é possível adicionar novas interações.
+            </div>
+
+            <!-- Se o chamado ainda estiver ABERTO ou em ANDAMENTO -->
+            <div th:if="${chamado.status == null or chamado.status.name() != 'ENCERRADO'}">
+                <h3 class="h5 mb-3">Adicionar Resposta</h3>
+                <form th:action="@{/chamados/{id}/interacoes(id=${chamado.id})}" method="post">
+                    <div class="mb-3">
+                        <textarea name="mensagem"
+                                  class="form-control"
+                                  rows="4"
+                                  placeholder="Digite sua resposta ou atualização sobre o chamado..."
+                                  required></textarea>
+                    </div>
+
+                    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+                        <button type="submit" class="btn btn-uberdesk">Enviar Interação</button>
+
+                        <label class="encerrar-box" for="checkEncerrar">
+                            <input type="checkbox" id="checkEncerrar" name="encerrar" value="true">
+                            <span>Encerrar chamado</span>
+                        </label>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+    </div>
+
+</body>
+</html>

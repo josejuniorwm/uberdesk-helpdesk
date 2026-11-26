@@ -46,6 +46,7 @@
                         <span class="badge rounded-pill text-bg-warning" th:text="${chamado.prioridade.codigo}">1</span>
                     </td>
                     <td class="text-center">
+                        <a th:href="@{/chamados/{id}/detalhes(id=${chamado.id})}" class="btn btn-sm btn-outline-info me-1">Interagir</a>
                         <a th:href="@{/ui/chamados/editar/{id}(id=${chamado.id})}" class="btn btn-sm btn-edit-ud me-1">Editar</a>
                         <a th:href="@{/ui/chamados/deletar/{id}(id=${chamado.id})}" class="btn btn-sm btn-delete-ud" onclick="return confirm('Tem certeza que deseja excluir este chamado?')">Excluir</a>
                     </td>
